@@ -6,6 +6,7 @@ class Data:
     def __init__(self):
         self.Time = self.getTime()
         self.df = self.getData(self.Time)
+        self.df_tpex = self.getData_tpex(str(int(self.Time)-19110000))
 
     def isClose(self):
         if time.localtime().tm_hour >= 14:
@@ -26,15 +27,28 @@ class Data:
         data = data.set_index("證券代號")
         return data
 
+    def getData_tpex(self,Time):
+        url = "http://www.tpex.org.tw/web/stock/aftertrading/daily_close_quotes/stk_quote_result.php?l=zh-tw&o=htm&d=%s&s=0,asc,0"%(Time[:-4]+'/'+Time[3:5]+"/"+Time[5:])
+        data = pd.read_html(url)[-1]
+        data.columns = [col[1] for col in data.columns]
+        data = data.set_index("代號")
+        return data
+
     def getStockName(self,stockNum):
         try:
             return self.df.loc[stockNum]["證券名稱"]
-        except:
-            return "None"
+        except KeyError:
+            try:
+                return self.df_tpex.loc[stockNum]["名稱"]
+            except Exception:
+                return "None"
 
     def getClosingPrice(self,stockNum):
         try:
             return self.df.loc[stockNum]["收盤價"]
-        except:
-            return "0.0"
+        except KeyError:
+            try:
+                return self.df_tpex.loc[stockNum]["收盤"]
+            except Exception:
+                return "0.0"
 

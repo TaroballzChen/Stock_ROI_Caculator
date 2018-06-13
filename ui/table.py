@@ -27,9 +27,9 @@ class table(QtWidgets.QTableWidget,):
     def ROI_style(self,ROI):
         ROI_item = QtWidgets.QTableWidgetItem(ROI)
         if float(ROI[:-1]) > 0.0:
-            ROI_item.setBackground(QColor(111,255,0))
+            ROI_item.setBackground(QColor(255, 0,0))
         else:
-            ROI_item.setBackground(QColor(255, 0, 0))
+            ROI_item.setBackground(QColor(111, 255, 0))
         return ROI_item
 
     """

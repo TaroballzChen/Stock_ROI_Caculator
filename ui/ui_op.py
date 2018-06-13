@@ -22,9 +22,13 @@ class MainUI(widget):
         predict_price = self.predict_price.text()
         ClosingPrice = self.Data.getClosingPrice(stockNum)
         if stockNum != "" and predict_price != "" and stockName != "None":
-            ROI = self.table.calcROI(predict_price,ClosingPrice)
-            ROI = self.table.ROI_style(ROI)
-            self.updateTable(self.Data.Time,stockNum,stockName,predict_price,ClosingPrice,ROI)
+            try:
+                ROI = self.table.calcROI(predict_price,ClosingPrice)
+            except ValueError:
+                return
+            else:
+                ROI = self.table.ROI_style(ROI)
+                self.updateTable(self.Data.Time,stockNum,stockName,predict_price,ClosingPrice,ROI)
 
 
     def UI_setStockName(self,stockNum):
