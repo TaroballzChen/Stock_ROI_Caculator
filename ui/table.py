@@ -64,7 +64,7 @@ class table(QtWidgets.QTableWidget,):
 
     def SaveDatabase(self):
         if self.path[0] != "":
-            with open(self.path[0],'w') as csv_file:
+            with open(self.path[0],'w',newline="") as csv_file:
                 writer = csv.writer(csv_file, dialect='excel')
                 for row in range(self.rowCount()):
                     row_data = []
