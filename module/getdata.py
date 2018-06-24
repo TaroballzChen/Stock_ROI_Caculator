@@ -13,12 +13,23 @@ class Data:
                 return True
         return False
 
+    def isWeekend(self):
+        if time.localtime().tm_wday == 5:
+            return 1
+        elif time.localtime().tm_wday == 6:
+            return 2
+        return False
+
     def getTime(self):
-        if self.isClose():
+        Weekend = self.isWeekend()
+        if Weekend:
+            Friday =  date.today()-timedelta(Weekend)
+            return Friday.strftime("%Y%m%d")
+        elif self.isClose():
             return time.strftime("%Y%m%d")
         else:
             yesterday = date.today() - timedelta(1)
-            return(yesterday.strftime("%Y%m%d"))
+            return yesterday.strftime("%Y%m%d")
 
     def getData(self,Time):
         url = "http://www.tse.com.tw/exchangeReport/MI_INDEX?response=html&date=%s&type=ALLBUT0999"%Time

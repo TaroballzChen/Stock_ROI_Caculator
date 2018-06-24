@@ -14,7 +14,7 @@ class table(QtWidgets.QTableWidget,):
         self.currentRowCount = self.rowCount()
         self.setColumnCount(len(self.col))
         self.setHorizontalHeaderLabels(self.col)
-        self.databaseOpen()
+        # self.databaseOpen()
 
     def newItem(self,col,text):
         Item = QtWidgets.QTableWidgetItem(text)
@@ -42,7 +42,7 @@ class table(QtWidgets.QTableWidget,):
             if self.path[0] != "" and self.path[0].endswith(".csv"):
                 return True
 
-    def databaseOpen(self):
+    def databaseOpen(self,getclosingprice):
         if self.isExist():
             with open(self.path[0],newline="") as csv_file:
                 self.setRowCount(0)
@@ -51,9 +51,19 @@ class table(QtWidgets.QTableWidget,):
                 for row_data in database:
                     row = self.rowCount()
                     self.insertRow(row)
+                    search_stockNum = ""
+                    NowPrice,Predict_Price = "",""
                     for column, stuff in enumerate(row_data):
+                        if column == 1:
+                            search_stockNum = stuff
+                        elif column == len(self.col) - 2 :
+                            stuff = getclosingprice(search_stockNum)
+                            NowPrice = stuff
+                        elif column == len(self.col) - 3 :
+                            Predict_Price = stuff
                         if column == len(self.col) - 1:
-                            item = self.ROI_style(stuff)
+                            ROI = self.calcROI(Predict_Price,NowPrice)
+                            item = self.ROI_style(ROI)
                         else:
                             item = QtWidgets.QTableWidgetItem(stuff)
                         self.setItem(row,column,item)
@@ -64,8 +74,8 @@ class table(QtWidgets.QTableWidget,):
 
     def SaveDatabase(self):
         if self.path[0] != "":
-            with open(self.path[0],'w',newline="") as csv_file:
-                writer = csv.writer(csv_file, dialect='excel')
+            with open(self.path[0],'w',newline="",) as csv_file:
+                writer = csv.writer(csv_file, dialect='excel',lineterminator='\n')
                 for row in range(self.rowCount()):
                     row_data = []
                     for column in range(self.columnCount()):

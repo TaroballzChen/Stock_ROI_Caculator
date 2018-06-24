@@ -19,8 +19,8 @@ class MainUI(widget):
     def run(self):
         stockNum = self.stock_num_input.text()
         stockName = self.UI_setStockName(stockNum)
-        predict_price = self.predict_price.text()
         ClosingPrice = self.Data.getClosingPrice(stockNum)
+        predict_price = ClosingPrice
         if stockNum != "" and predict_price != "" and stockName != "None":
             try:
                 ROI = self.table.calcROI(predict_price,ClosingPrice)

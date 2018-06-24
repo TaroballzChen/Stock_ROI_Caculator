@@ -6,6 +6,7 @@ class widget(QtWidgets.QWidget,):
     def __init__(self):
         super().__init__()
         self.table = table()
+        self.table.databaseOpen(self.Data.getClosingPrice)
 
 
     def search_block(self,run):
@@ -16,18 +17,18 @@ class widget(QtWidgets.QWidget,):
         self.stock_name  = QtWidgets.QLineEdit()
         self.stock_name.setReadOnly(True)
 
-        predict_price_l = QtWidgets.QLabel("篩選日收盤價")
-        self.predict_price = QtWidgets.QLineEdit()
+        # predict_price_l = QtWidgets.QLabel("篩選日收盤價")
+        # self.predict_price = QtWidgets.QLineEdit()
+        # box.addWidget(predict_price_l)
+        #box.addWidget(self.predict_price)
 
-        self.runbutton = QtWidgets.QPushButton("計算")
+        self.runbutton = QtWidgets.QPushButton("選定")
 
         box = QtWidgets.QHBoxLayout()
         box.addWidget(stock_num)
         box.addWidget(self.stock_num_input)
         box.addWidget(stock_name)
         box.addWidget(self.stock_name)
-        box.addWidget(predict_price_l)
-        box.addWidget(self.predict_price)
         box.addWidget(self.runbutton)
 
         self.runbutton.clicked.connect(run)
